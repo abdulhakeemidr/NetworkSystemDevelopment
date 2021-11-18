@@ -10,6 +10,8 @@ public class GameSystemManager : MonoBehaviour
     GameObject createToggle, loginToggle;
     GameObject waitingText, playerNameText;
     GameObject networkClient;
+    [HideInInspector]
+    public GameObject chatBoxSystem;
 
     private void Start()
     {
@@ -57,6 +59,10 @@ public class GameSystemManager : MonoBehaviour
             {
                 playerNameText = go;
             }
+            else if (go.name == "ChatBox")
+            {
+                chatBoxSystem = go;
+            }
         }
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
@@ -64,6 +70,11 @@ public class GameSystemManager : MonoBehaviour
         ticTacToeSquareButton.GetComponent<Button>().onClick.AddListener(TicTacToeSquareButtonPressed);
 
         ChangeState(GameStates.LoginMenu);
+    }
+
+    private void Update()
+    {
+        ChatBoxMessageSend();
     }
 
     public void SubmitButtonPressed()
@@ -95,6 +106,23 @@ public class GameSystemManager : MonoBehaviour
         ChangeState(GameStates.TicTacToe);
     }
 
+    public void ChatBoxMessageSend()
+    {
+        GameObject chatInputField = chatBoxSystem.transform.GetChild(1).gameObject;
+        
+        string chatMsg = chatInputField.GetComponent<InputField>().text;
+        //Debug.Log(chatMsg);
+
+        string msg;
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log(chatMsg);
+            msg = ClientToServerSignifiers.ChatBoxMessageSend + "," + chatMsg;
+            networkClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
+        }
+    }
+
     public void ChangeState(GameStates newState)
     {
         joinGameRoomButton.SetActive(false);
@@ -106,6 +134,7 @@ public class GameSystemManager : MonoBehaviour
         loginToggle.SetActive(false);
         waitingText.SetActive(false);
         playerNameText.SetActive(false);
+        chatBoxSystem.SetActive(false);
 
         if (newState == GameStates.LoginMenu)
         {
@@ -129,6 +158,7 @@ public class GameSystemManager : MonoBehaviour
         {
             ticTacToeSquareButton.SetActive(true);
             playerNameText.SetActive(true);
+            chatBoxSystem.SetActive(true);
         }
     }
 }

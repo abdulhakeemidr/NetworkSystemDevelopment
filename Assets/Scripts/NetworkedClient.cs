@@ -127,7 +127,7 @@ public class NetworkedClient : MonoBehaviour
         string[] csv = msg.Split(',');
 
         int signifier = int.Parse(csv[0]);
-        string message = csv[1];
+        //string message = csv[1];
 
         switch (signifier)
         {
@@ -155,6 +155,12 @@ public class NetworkedClient : MonoBehaviour
             case ServertoClientSignifiers.GameStart:
                 gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToe);
                 break;
+
+            case ServertoClientSignifiers.chatBoxMessageReceive:
+                GameObject chatBox = gameSystemManager.GetComponent<GameSystemManager>().chatBoxSystem;
+                Debug.Log(csv[1]);
+                chatBox.GetComponent<ChatBoxSystem>().SendMessageToChat(csv[1]);
+                break;
         }
     }
 
@@ -171,6 +177,7 @@ static public class ClientToServerSignifiers
     public const int LoginAccount = 2;
     public const int JoinQueueForGameRoom = 3;
     public const int TicTacToeShapeSelectPlay = 4;
+    public const int ChatBoxMessageSend = 5;
 }
 
 static public class ServertoClientSignifiers
@@ -183,4 +190,5 @@ static public class ServertoClientSignifiers
 
     public const int OpponentPlay = 5;
     public const int GameStart = 6;
+    public const int chatBoxMessageReceive = 7;
 }
