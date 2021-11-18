@@ -9,6 +9,9 @@ public class ChatBoxSystem : MonoBehaviour
     
     public GameObject chatPanel, textObject;
     public InputField chatInputField;
+
+    public Color playerMessageColor = Color.white;
+    public Color receiveMessageColor = Color.green;
     
     [SerializeField]
     List<Message> messages = new List<Message>();
@@ -19,33 +22,7 @@ public class ChatBoxSystem : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-        if(chatInputField.text != "")
-        {
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                SendMessageToChat(chatInputField.text);
-                chatInputField.text = "";
-            }
-        }
-        else
-        {
-            if(!chatInputField.isFocused && Input.GetKeyDown(KeyCode.Return))
-            {
-                chatInputField.ActivateInputField();
-            }
-        }
-        if (!chatInputField.isFocused)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SendMessageToChat("You pressed space bar");
-            }
-        }
-    }
-
-    public void SendMessageToChat(string text)
+    public void SendMessageToLocalChatBox(string text, MessageType messageType = MessageType.playerMessage)
     {
         if (messages.Count >= maxMessageList)
         {
@@ -61,8 +38,26 @@ public class ChatBoxSystem : MonoBehaviour
 
         newMessage.textObject = newText.GetComponent<Text>();
         newMessage.textObject.text = newMessage.text;
+        newMessage.textObject.color = MessageTypeColour(messageType);
 
         messages.Add(newMessage);
+    }
+
+    Color MessageTypeColour(MessageType type)
+    {
+        Color color = receiveMessageColor;
+        switch(type)
+        {
+            case MessageType.playerMessage:
+                color = playerMessageColor;
+                break;
+
+            case MessageType.otherPlayerMessage:
+                color = receiveMessageColor;
+                break;
+
+        }
+        return color;
     }
 }
 
@@ -71,4 +66,10 @@ public class Message
 {
     public string text;
     public Text textObject;
+}
+
+public enum MessageType
+{
+    playerMessage,
+    otherPlayerMessage
 }

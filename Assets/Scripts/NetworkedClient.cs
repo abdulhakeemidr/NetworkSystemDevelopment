@@ -159,7 +159,7 @@ public class NetworkedClient : MonoBehaviour
             case ServertoClientSignifiers.chatBoxMessageReceive:
                 GameObject chatBox = gameSystemManager.GetComponent<GameSystemManager>().chatBoxSystem;
                 Debug.Log(csv[1]);
-                chatBox.GetComponent<ChatBoxSystem>().SendMessageToChat(csv[1]);
+                chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.otherPlayerMessage);
                 break;
         }
     }

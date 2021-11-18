@@ -647,7 +647,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 470913498}
   m_HandleRect: {fileID: 470913497}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -995,6 +995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53a1caeccf142549996f9d00814f4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatBoxSystem: {fileID: 0}
 --- !u!4 &512542931
 Transform:
   m_ObjectHideFlags: 0
@@ -1812,6 +1813,8 @@ MonoBehaviour:
   chatPanel: {fileID: 573987616}
   textObject: {fileID: 4900483246469380447, guid: 87757c097917d6646867c472dda7e058, type: 3}
   chatInputField: {fileID: 2121337742}
+  playerMessageColor: {r: 1, g: 1, b: 1, a: 1}
+  receiveMessageColor: {r: 0, g: 1, b: 0, a: 1}
   messages: []
 --- !u!1 &1097387846
 GameObject:
@@ -2270,7 +2273,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1873255250}
   m_HandleRect: {fileID: 1873255249}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

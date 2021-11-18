@@ -12,6 +12,9 @@ public class GameSystemManager : MonoBehaviour
     GameObject networkClient;
     [HideInInspector]
     public GameObject chatBoxSystem;
+    InputField chatInputField;
+
+    string currentAccountName;
 
     private void Start()
     {
@@ -64,6 +67,7 @@ public class GameSystemManager : MonoBehaviour
                 chatBoxSystem = go;
             }
         }
+        chatInputField = chatBoxSystem.transform.GetChild(1).gameObject.GetComponent<InputField>();
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
@@ -74,7 +78,31 @@ public class GameSystemManager : MonoBehaviour
 
     private void Update()
     {
-        ChatBoxMessageSend();
+        ChatBoxSystem chatBox = chatBoxSystem.GetComponent<ChatBoxSystem>();
+        if (chatInputField.text != "")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                chatBox.SendMessageToLocalChatBox(currentAccountName + ": " + chatInputField.text);
+                ChatBoxMessageSend();
+                chatInputField.text = "";
+            }
+        }
+        else
+        {
+            if (!chatInputField.isFocused && Input.GetKeyDown(KeyCode.Return))
+            {
+                chatInputField.ActivateInputField();
+            }
+        }
+        if (!chatInputField.isFocused)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                chatBox.SendMessageToLocalChatBox("You pressed space bar");
+            }
+        }
+        //ChatBoxMessageSend();
     }
 
     public void SubmitButtonPressed()
@@ -91,6 +119,7 @@ public class GameSystemManager : MonoBehaviour
 
         networkClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
         playerNameText.GetComponent<Text>().text = "Profile: " + username;
+        currentAccountName = username;
         Debug.Log(msg);
     }
 
@@ -108,19 +137,19 @@ public class GameSystemManager : MonoBehaviour
 
     public void ChatBoxMessageSend()
     {
-        GameObject chatInputField = chatBoxSystem.transform.GetChild(1).gameObject;
-        
         string chatMsg = chatInputField.GetComponent<InputField>().text;
-        //Debug.Log(chatMsg);
-
         string msg;
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log(chatMsg);
-            msg = ClientToServerSignifiers.ChatBoxMessageSend + "," + chatMsg;
-            networkClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
-        }
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    Debug.Log(chatMsg);
+        //    msg = ClientToServerSignifiers.ChatBoxMessageSend + "," + chatMsg;
+        //    networkClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
+        //}
+
+        Debug.Log(chatMsg);
+        msg = ClientToServerSignifiers.ChatBoxMessageSend + "," + chatMsg;
+        networkClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
     }
 
     public void ChangeState(GameStates newState)
