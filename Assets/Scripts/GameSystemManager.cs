@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class GameSystemManager : MonoBehaviour
 {
-    GameObject submitButton, joinGameRoomButton, ticTacToeSquareButton;
+    GameObject submitButton, joinGameRoomButton, joinGameRoomObserveButton,
+        ticTacToeSquareButton;
     GameObject usernameInput, passwordInput;
     GameObject createToggle, loginToggle;
-    GameObject waitingText, playerNameText;
+    GameObject stateInfoText, playerNameText;
     GameObject networkClient;
     [HideInInspector]
     public GameObject chatBoxSystem;
@@ -50,13 +51,17 @@ public class GameSystemManager : MonoBehaviour
             {
                 joinGameRoomButton = go;
             }
+            else if (go.name == "JoinGameRoomObserveButton")
+            {
+                joinGameRoomObserveButton = go;
+            }
             else if (go.name == "TicTacToeSquareButton")
             {
                 ticTacToeSquareButton = go;
             }
-            else if (go.name == "WaitingText")
+            else if (go.name == "StateInfoText")
             {
-                waitingText = go;
+                stateInfoText = go;
             }
             else if (go.name == "PlayerNameText")
             {
@@ -71,6 +76,7 @@ public class GameSystemManager : MonoBehaviour
 
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
+        joinGameRoomObserveButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomObserveButtonPressed);
         ticTacToeSquareButton.GetComponent<Button>().onClick.AddListener(TicTacToeSquareButtonPressed);
 
         ChangeState(GameStates.LoginMenu);
@@ -84,6 +90,7 @@ public class GameSystemManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 chatBox.SendMessageToLocalChatBox(currentAccountName + ": " + chatInputField.text);
+                Debug.Log("Updating chat to others");
                 ChatBoxMessageSend();
                 chatInputField.text = "";
             }
@@ -129,6 +136,12 @@ public class GameSystemManager : MonoBehaviour
         ChangeState(GameStates.WaitingInQueueForOtherPlayer);
     }
 
+    public void JoinGameRoomObserveButtonPressed()
+    {
+        networkClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.JoinAsObserver + "");
+        //ChangeState(GameStates.TicTacToe);
+    }
+
     public void TicTacToeSquareButtonPressed()
     {
         networkClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToeShapeSelectPlay + "");
@@ -155,13 +168,14 @@ public class GameSystemManager : MonoBehaviour
     public void ChangeState(GameStates newState)
     {
         joinGameRoomButton.SetActive(false);
+        joinGameRoomObserveButton.SetActive(false);
         submitButton.SetActive(false);
         ticTacToeSquareButton.SetActive(false);
         usernameInput.SetActive(false);
         passwordInput.SetActive(false);
         createToggle.SetActive(false);
         loginToggle.SetActive(false);
-        waitingText.SetActive(false);
+        stateInfoText.SetActive(false);
         playerNameText.SetActive(false);
         chatBoxSystem.SetActive(false);
 
@@ -176,11 +190,13 @@ public class GameSystemManager : MonoBehaviour
         else if (newState == GameStates.MainMenu)
         {
             joinGameRoomButton.SetActive(true);
+            joinGameRoomObserveButton.SetActive(true);
             playerNameText.SetActive(true);
         }
         else if (newState == GameStates.WaitingInQueueForOtherPlayer)
         {
-            waitingText.SetActive(true);
+            stateInfoText.SetActive(true);
+            stateInfoText.GetComponent<Text>().text = "Waiting for other Players....";
             playerNameText.SetActive(true);
         }
         else if (newState == GameStates.TicTacToe)
@@ -188,6 +204,13 @@ public class GameSystemManager : MonoBehaviour
             ticTacToeSquareButton.SetActive(true);
             playerNameText.SetActive(true);
             chatBoxSystem.SetActive(true);
+        }
+        else if (newState == GameStates.TicTacToeObserve)
+        {
+            playerNameText.SetActive(true);
+            chatBoxSystem.SetActive(true);
+            stateInfoText.SetActive(true);
+            stateInfoText.GetComponent<Text>().text = "Joined As Observer";
         }
     }
 }
@@ -197,5 +220,6 @@ public enum GameStates
     LoginMenu,
     MainMenu,
     WaitingInQueueForOtherPlayer,
-    TicTacToe
+    TicTacToe,
+    TicTacToeObserve
 }

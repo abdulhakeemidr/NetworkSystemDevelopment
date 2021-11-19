@@ -24,6 +24,7 @@ public class ChatBoxSystem : MonoBehaviour
 
     public void SendMessageToLocalChatBox(string text, MessageType messageType = MessageType.playerMessage)
     {
+        Debug.Log("Added to chat box");
         if (messages.Count >= maxMessageList)
         {
             Destroy(messages[0].textObject.gameObject);

@@ -161,6 +161,10 @@ public class NetworkedClient : MonoBehaviour
                 Debug.Log(csv[1]);
                 chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.otherPlayerMessage);
                 break;
+
+            case ServertoClientSignifiers.ObserverJoined:
+                gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToe);
+                break;
         }
     }
 
@@ -178,6 +182,7 @@ static public class ClientToServerSignifiers
     public const int JoinQueueForGameRoom = 3;
     public const int TicTacToeShapeSelectPlay = 4;
     public const int ChatBoxMessageSend = 5;
+    public const int JoinAsObserver = 6;
 }
 
 static public class ServertoClientSignifiers
@@ -191,4 +196,6 @@ static public class ServertoClientSignifiers
     public const int OpponentPlay = 5;
     public const int GameStart = 6;
     public const int chatBoxMessageReceive = 7;
+
+    public const int ObserverJoined = 8;
 }
