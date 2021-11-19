@@ -159,7 +159,21 @@ public class NetworkedClient : MonoBehaviour
             case ServertoClientSignifiers.chatBoxMessageReceive:
                 GameObject chatBox = gameSystemManager.GetComponent<GameSystemManager>().chatBoxSystem;
                 Debug.Log(csv[1]);
-                chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.otherPlayerMessage);
+                int msgType = int.Parse(csv[2]);
+
+                if(msgType == ServertoClientSignifiers.chatReceivedTypeObserver)
+                {
+                    chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.observerMessage);
+                }
+                else if(msgType == ServertoClientSignifiers.chatReceivedTypePlayer)
+                {
+                    chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.otherPlayerMessage);
+                }
+                else
+                {
+                    chatBox.GetComponent<ChatBoxSystem>().SendMessageToLocalChatBox(csv[1], MessageType.otherPlayerMessage);
+                }
+
                 break;
 
             case ServertoClientSignifiers.ObserverJoined:
@@ -198,4 +212,7 @@ static public class ServertoClientSignifiers
     public const int chatBoxMessageReceive = 7;
 
     public const int ObserverJoined = 8;
+    public const int chatReceivedTypePlayer = 9;
+    public const int chatReceivedTypeObserver = 10;
+    public const int chatReceivedTypeServer = 11;
 }

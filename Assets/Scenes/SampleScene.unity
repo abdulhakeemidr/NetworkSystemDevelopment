@@ -1935,7 +1935,8 @@ MonoBehaviour:
   textObject: {fileID: 4900483246469380447, guid: 87757c097917d6646867c472dda7e058, type: 3}
   chatInputField: {fileID: 2121337742}
   playerMessageColor: {r: 1, g: 1, b: 1, a: 1}
-  receiveMessageColor: {r: 0, g: 1, b: 0, a: 1}
+  receiveMessageColor: {r: 1, g: 0, b: 0, a: 1}
+  observerMessageColor: {r: 0, g: 1, b: 0, a: 1}
   messages: []
 --- !u!1 &1097387846
 GameObject:

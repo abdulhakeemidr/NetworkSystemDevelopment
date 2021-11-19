@@ -10,8 +10,9 @@ public class ChatBoxSystem : MonoBehaviour
     public GameObject chatPanel, textObject;
     public InputField chatInputField;
 
-    public Color playerMessageColor = Color.white;
-    public Color receiveMessageColor = Color.green;
+    public Color yourMessageColor = Color.white;
+    public Color otherPlayerMessageColor = Color.red;
+    public Color observerMessageColor = Color.green;
     
     [SerializeField]
     List<Message> messages = new List<Message>();
@@ -46,17 +47,20 @@ public class ChatBoxSystem : MonoBehaviour
 
     Color MessageTypeColour(MessageType type)
     {
-        Color color = receiveMessageColor;
+        Color color = otherPlayerMessageColor;
         switch(type)
         {
             case MessageType.playerMessage:
-                color = playerMessageColor;
+                color = yourMessageColor;
                 break;
 
             case MessageType.otherPlayerMessage:
-                color = receiveMessageColor;
+                color = otherPlayerMessageColor;
                 break;
 
+            case MessageType.observerMessage:
+                color = observerMessageColor;
+                break;
         }
         return color;
     }
@@ -72,5 +76,6 @@ public class Message
 public enum MessageType
 {
     playerMessage,
-    otherPlayerMessage
+    otherPlayerMessage,
+    observerMessage
 }
