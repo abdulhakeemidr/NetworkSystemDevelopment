@@ -177,7 +177,7 @@ public class NetworkedClient : MonoBehaviour
                 break;
 
             case ServertoClientSignifiers.ObserverJoined:
-                gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToe);
+                gameSystemManager.GetComponent<GameSystemManager>().ChangeState(GameStates.TicTacToeObserve);
                 break;
         }
     }

@@ -9,7 +9,7 @@ public class GameSystemManager : MonoBehaviour
         ticTacToeSquareButton;
     GameObject usernameInput, passwordInput;
     GameObject createToggle, loginToggle;
-    GameObject stateInfoText, playerNameText;
+    GameObject stateInfoText, playerNameText, observerListText;
     GameObject networkClient;
     [HideInInspector]
     public GameObject chatBoxSystem;
@@ -66,6 +66,10 @@ public class GameSystemManager : MonoBehaviour
             else if (go.name == "PlayerNameText")
             {
                 playerNameText = go;
+            }
+            else if (go.name == "ObserverListText")
+            {
+                observerListText = go;
             }
             else if (go.name == "ChatBox")
             {
@@ -177,6 +181,7 @@ public class GameSystemManager : MonoBehaviour
         loginToggle.SetActive(false);
         stateInfoText.SetActive(false);
         playerNameText.SetActive(false);
+        observerListText.SetActive(false);
         chatBoxSystem.SetActive(false);
 
         if (newState == GameStates.LoginMenu)
@@ -204,11 +209,13 @@ public class GameSystemManager : MonoBehaviour
             ticTacToeSquareButton.SetActive(true);
             playerNameText.SetActive(true);
             chatBoxSystem.SetActive(true);
+            //observerListText.SetActive(true);
         }
         else if (newState == GameStates.TicTacToeObserve)
         {
             playerNameText.SetActive(true);
             chatBoxSystem.SetActive(true);
+            //observerListText.SetActive(true);
             stateInfoText.SetActive(true);
             stateInfoText.GetComponent<Text>().text = "Joined As Observer";
         }
