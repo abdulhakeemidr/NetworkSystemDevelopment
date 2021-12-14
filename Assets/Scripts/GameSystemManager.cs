@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameSystemManager : MonoBehaviour
 {
     GameObject submitButton, joinGameRoomButton, joinGameRoomObserveButton,
-        ticTacToeSquareButton;
+        ticTacToeGame;
     GameObject usernameInput, passwordInput;
     GameObject createToggle, loginToggle;
     GameObject stateInfoText, playerNameText, observerListText;
@@ -55,9 +55,9 @@ public class GameSystemManager : MonoBehaviour
             {
                 joinGameRoomObserveButton = go;
             }
-            else if (go.name == "TicTacToeSquareButton")
+            else if (go.name == "TicTacToeGame")
             {
-                ticTacToeSquareButton = go;
+                ticTacToeGame = go;
             }
             else if (go.name == "StateInfoText")
             {
@@ -81,7 +81,7 @@ public class GameSystemManager : MonoBehaviour
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
         joinGameRoomObserveButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomObserveButtonPressed);
-        ticTacToeSquareButton.GetComponent<Button>().onClick.AddListener(TicTacToeSquareButtonPressed);
+        ticTacToeGame.GetComponent<ButtonChange>().gamePlayButton.AddListener(TicTacToeSquareButtonPressed);
 
         ChangeState(GameStates.LoginMenu);
     }
@@ -174,7 +174,7 @@ public class GameSystemManager : MonoBehaviour
         joinGameRoomButton.SetActive(false);
         joinGameRoomObserveButton.SetActive(false);
         submitButton.SetActive(false);
-        ticTacToeSquareButton.SetActive(false);
+        ticTacToeGame.SetActive(false);
         usernameInput.SetActive(false);
         passwordInput.SetActive(false);
         createToggle.SetActive(false);
@@ -206,7 +206,7 @@ public class GameSystemManager : MonoBehaviour
         }
         else if (newState == GameStates.TicTacToe)
         {
-            ticTacToeSquareButton.SetActive(true);
+            ticTacToeGame.SetActive(true);
             playerNameText.SetActive(true);
             chatBoxSystem.SetActive(true);
             //observerListText.SetActive(true);
