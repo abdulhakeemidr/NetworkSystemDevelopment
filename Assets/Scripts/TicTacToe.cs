@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class ButtonChange : MonoBehaviour
+public class TicTacToe : MonoBehaviour
 {
     List<Button> buttons = new List<Button>();
 

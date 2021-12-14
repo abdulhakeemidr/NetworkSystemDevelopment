@@ -81,7 +81,7 @@ public class GameSystemManager : MonoBehaviour
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
         joinGameRoomObserveButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomObserveButtonPressed);
-        ticTacToeGame.GetComponent<ButtonChange>().gamePlayButton.AddListener(TicTacToeSquareTurnPlayed);
+        ticTacToeGame.GetComponent<TicTacToe>().gamePlayButton.AddListener(TicTacToeSquareTurnPlayed);
 
         ChangeState(GameStates.LoginMenu);
     }
