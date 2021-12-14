@@ -81,7 +81,7 @@ public class GameSystemManager : MonoBehaviour
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
         joinGameRoomObserveButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomObserveButtonPressed);
-        ticTacToeGame.GetComponent<ButtonChange>().gamePlayButton.AddListener(TicTacToeSquareButtonPressed);
+        ticTacToeGame.GetComponent<ButtonChange>().gamePlayButton.AddListener(TicTacToeSquareTurnPlayed);
 
         ChangeState(GameStates.LoginMenu);
     }
@@ -146,7 +146,7 @@ public class GameSystemManager : MonoBehaviour
         //ChangeState(GameStates.TicTacToe);
     }
 
-    public void TicTacToeSquareButtonPressed()
+    public void TicTacToeSquareTurnPlayed()
     {
         networkClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToeShapeSelectPlay + "");
         ChangeState(GameStates.TicTacToe);

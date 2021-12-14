@@ -8,6 +8,9 @@ public class ButtonChange : MonoBehaviour
 {
     List<Button> buttons = new List<Button>();
 
+    [SerializeField]
+    List<Button> usedButtons = new List<Button>();
+
     public UnityEvent gamePlayButton;
 
     Button ResetButton;
@@ -23,6 +26,7 @@ public class ButtonChange : MonoBehaviour
 
         foreach(Button child in allChildren)
         {
+            // Add Button listener function to each button
             child.onClick.
                 AddListener(delegate { PlayerTurn(child); });
 
@@ -35,11 +39,27 @@ public class ButtonChange : MonoBehaviour
         //ResetButton.onClick.AddListener(ResetGame);
     }
 
+    private void Update()
+    {
+        foreach(Button used in usedButtons)
+        {
+            if(used.enabled == true)
+            {
+                used.enabled = false;
+            }
+        }
+    }
+
     public void PlayerTurn(Button buttonClicked)
     {
-        //Debug.Log(buttonClicked.gameObject.name);
         var TextHold = buttonClicked.gameObject.transform.GetChild(0).GetComponent<Text>();
 
+        //foreach(Button button in buttons)
+        //{
+        //}
+
+        // Calls the TicTacToeSquareTurnPlayed() in gameSystemManager to send
+        // a turn played message to the server
         gamePlayButton.Invoke();
 
         if (playerone == true)
@@ -53,7 +73,8 @@ public class ButtonChange : MonoBehaviour
             playerone = true;
         }
 
-        buttonClicked.enabled = false;
+        //buttonClicked.enabled = false;
+        usedButtons.Add(buttonClicked);
     }
 
     void ResetGame()
@@ -66,6 +87,22 @@ public class ButtonChange : MonoBehaviour
             }
             var TextHold = button.gameObject.transform.GetChild(0).GetComponent<Text>();
             TextHold.text = "";
+        }
+    }
+
+    public void DisableAllButtons()
+    {
+        foreach(Button button in buttons)
+        {
+            button.enabled = false;
+        }
+    }
+
+    public void EnableAllButtons()
+    {
+        foreach (Button button in buttons)
+        {
+            button.enabled = true;
         }
     }
 }
